@@ -73,7 +73,14 @@ define(function(require, exports) {
       if (xhr.readyState === 4) {
         // Process as a Lo-Dash template and cache.
         buildMap[name] = _.template(xhr.responseText);
-
+        
+        // allow template to be undefined at some point
+        if (requirejs.onResourceLoad) {
+          requirejs.onResourceLoad(load, {
+            name: 'ldsh!' + name
+          });
+        }
+        
         // Return the compiled template.
         load(buildMap[name]);
       }
